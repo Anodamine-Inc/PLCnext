@@ -1,0 +1,46 @@
+const cron = require('node-cron');
+const axios = require('axios');
+
+const PLC_URL = process.env.PLC_URL || '<plc-url-here>';
+const SLACK_URL = process.env.SLACK_URL || '<slack-url-here>';
+// Change to false when connecting to a real PLC device
+const TESTING = process.env.TESTING || true;
+
+// Test data
+const exampleData = require('./example-data.json');
+
+function getPlcData() {
+    if(TESTING) {
+        return exampleData;
+    }
+
+    let data;
+    axios.get(PLC_URL).then(res => {
+        data = res.data;
+    })
+    .catch(err => {
+        console.log(err);
+    });
+    return data;
+}
+
+function notifySlack(message) {
+    axios.post(SLACK_URL, {text: message}).then(res => {
+        data = res.data;
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
+
+console.log('App has started... waiting for cron.');
+cron.schedule('* * * * *', () => {
+  console.log('Running a task every minute');
+  console.log('Get PLC Data');
+  let plcData = getPlcData(true);
+  if(plcData) {
+      console.log('Sending message to Slack');
+      let message = '```' + JSON.stringify(plcData,null,2) + '```';
+      notifySlack(message);
+  }
+});

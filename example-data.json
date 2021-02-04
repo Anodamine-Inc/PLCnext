@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-0/schema#",
+    "title": "DataDictionary",
+    "HmiVariables2": {
+       "Arp.Plc.Eclr/ESM_DATA.ESM_INFOS[1].TICK_COUNT": {
+          "Type": "DINT",
+          "InitValue": "0",
+          "ReadOnly": true
+       },
+       "Arp.Plc.Eclr/Var1": {
+          "Type": "BOOL",
+          "InitValue": "FALSE"
+       },
+       "Arp.Plc.Eclr/Var2": {
+          "Type": "BOOL",
+          "InitValue": "FALSE"
+       }
+    }
+ }
