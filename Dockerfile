@@ -1,4 +1,7 @@
-FROM arm32v7/node:14-alpine
+FROM armhf/debian
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
+RUN sudo bash nodesource_setup.sh
 
 WORKDIR /app
 
