@@ -3,9 +3,10 @@ const axios = require('axios');
 
 const PLC_URL = process.env.PLC_URL || '<plc-url-here>';
 const SLACK_URL = process.env.SLACK_URL || '<slack-url-here>';
+// Default to every minute
+const CRON_SHEDULE = process.env.CRON_SHEDULE || '* * * * *';
 // Change to false when connecting to a real PLC device
 const TESTING = process.env.TESTING || true;
-
 // Test data
 const exampleData = require('./example-data.json');
 
@@ -34,12 +35,11 @@ function notifySlack(message) {
 }
 
 console.log('App has started... waiting for cron.');
-cron.schedule('* * * * *', () => {
-  console.log('Running a task every minute');
-  console.log('Get PLC Data');
+cron.schedule(CRON_SHEDULE, () => {
+  console.log('Getting PLC Data...');
   let plcData = getPlcData(true);
   if(plcData) {
-      console.log('Sending message to Slack');
+      console.log('Sending data to Slack...');
       let message = '```' + JSON.stringify(plcData,null,2) + '```';
       notifySlack(message);
   }
