@@ -67,3 +67,12 @@ We push Docker with:
 ```bash
 docker push anodamine/plcnext:14-alpine
 ```
+
+## Setting up the PLC
+
+1. Update the firmware
+1. Create the root password, give access
+1. Set the time
+1. Install Docker
+1. Pull the docker image
+1. Start the docker instance (with process vars)
