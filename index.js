@@ -5,16 +5,9 @@ const PLC_URL = process.env.PLC_URL || '<plc-url-here>';
 const SLACK_URL = process.env.SLACK_URL || '<slack-url-here>';
 // Default to every minute
 const CRON_SHEDULE = process.env.CRON_SHEDULE || '* * * * *';
-// Change to false when connecting to a real PLC device
-const TESTING = process.env.TESTING || true;
-// Test data
-const exampleData = require('./example-data.json');
+
 
 function getPlcData() {
-    if(TESTING) {
-        return exampleData;
-    }
-
     let data;
     axios.get(PLC_URL).then(res => {
         data = res.data;
