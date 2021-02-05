@@ -1,7 +1,4 @@
-FROM armhf/debian
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-RUN sudo bash nodesource_setup.sh
+FROM arm32v7/node
 
 WORKDIR /app
 
