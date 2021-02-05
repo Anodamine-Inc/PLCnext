@@ -19,6 +19,7 @@
   "homepage": "https://github.com/duanebester/PLCTest#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "https": "^1.0.0",
     "node-cron": "^2.0.3"
   }
 }
