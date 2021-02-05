@@ -2,8 +2,8 @@ const cron = require('node-cron');
 const axios = require('axios');
 
 const PLC_URL = process.env.PLC_URL || '<plc-url-here>';
-const SLACK_URL = process.env.SLACK_URL || '<slack-url-here>';
-// Default to every minute
+const WEBHOOK_URL = process.env.WEBHOOK_URL || '<webhook-url-here>';
+// Defaults to every minute
 const CRON_SHEDULE = process.env.CRON_SHEDULE || '* * * * *';
 
 
@@ -18,22 +18,21 @@ function getPlcData() {
     return data;
 }
 
-function notifySlack(message) {
-    axios.post(SLACK_URL, {text: message}).then(res => {
-        data = res.data;
+function notifyWebhook(payload) {
+    axios.post(WEBHOOK_URL, payload).then(res => {
+        console.log('Notified webhook')
     })
     .catch(err => {
         console.log(err);
     });
 }
 
-console.log('App has started... waiting for cron.');
+console.log('App has started... waiting for cron. - Duane Bester');
+
 cron.schedule(CRON_SHEDULE, () => {
   console.log('Getting PLC Data...');
-  let plcData = getPlcData(true);
+  let plcData = getPlcData();
   if(plcData) {
-      console.log('Sending data to Slack...');
-      let message = '```' + JSON.stringify(plcData,null,2) + '```';
-      notifySlack(message);
+    notifyWebhook(plcData);
   }
 });

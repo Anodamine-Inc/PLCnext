@@ -6,13 +6,13 @@ Install dependencies:
 npm install
 ```
 
-Posts the data to slack every minute with the cron job.
+Posts the data to webhook every minute with the cron job.
 
 Update the following variables:
 
 ```js
 const PLC_URL = process.env.PLC_URL || "<plc-url-here>";
-const SLACK_URL = process.env.SLACK_URL || "<slack-url-here>";
+const WEBHOOK_URL = process.env.WEBHOOK_URL || "<webhook-url-here>";
 
 // Default to every minute
 const CRON_SHEDULE = process.env.CRON_SHEDULE || "* * * * *";
@@ -41,7 +41,7 @@ balena-engine pull anodamine/plcnext:14-alpine
 And we can run it like so:
 
 ```bash
-docker run -d -e SLACK_URL='<slack-url>' -e PLC_URL='<plc-url>' anodamine/plcnext:14-alpine
+docker run -d -e WEBHOOK_URL='<webhook-url>' -e PLC_URL='<plc-url>' anodamine/plcnext:14-alpine
 ```
 
 We can also set a custom cron time:
