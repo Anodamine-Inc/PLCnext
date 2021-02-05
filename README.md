@@ -26,9 +26,7 @@ node index.js
 
 ### Docker
 
-Push commits to the `main` branch and it will be automatically built in [Docker Hub](https://hub.docker.com/r/anodamine/plcnext)
-
-We can then pull the image with Docker
+We can pull the Docker image with:
 
 ```bash
 docker pull anodamine/plcnext:14-alpine
@@ -50,4 +48,22 @@ We can also set a custom cron time:
 
 ```bash
 -e CRON_SHEDULE='*/60 * * * *'
+```
+
+#### Deploying to Docker Hub
+
+```bash
+docker login
+```
+
+We build Docker with:
+
+```bash
+docker build -t anodamine/plcnext:14-alpine .
+```
+
+We push Docker with:
+
+```bash
+docker push anodamine/plcnext:14-alpine
 ```
