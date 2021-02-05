@@ -9,7 +9,10 @@ const CRON_SHEDULE = process.env.CRON_SHEDULE || '* * * * *';
 
 function getPlcData() {
     let data;
-    axios.get(PLC_URL).then(res => {
+    const agent = new https.Agent({  
+        rejectUnauthorized: false
+      });
+    axios.get(PLC_URL, { httpsAgent: agent}).then(res => {
         data = res.data;
     })
     .catch(err => {
