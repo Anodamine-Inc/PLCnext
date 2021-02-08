@@ -42,7 +42,7 @@ function notifyWebhook(payload) {
     });
 }
 
-console.log('App has started... waiting for cron. - Duane Bester');
+console.log('App has started... waiting for cron.');
 
 cron.schedule(CRON_SHEDULE, () => {
     console.log('Getting PLC Data...');
