@@ -34,7 +34,6 @@ function notifyWebhook(payload) {
       .digest('hex');
       
     axios.post(WEBHOOK_URL, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
-        console.log(res);
         console.log('Notified webhook')
     })
     .catch(err => {
