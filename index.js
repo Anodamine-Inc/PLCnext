@@ -27,7 +27,7 @@ function getPlcData() {
 };
 
 function notifyWebhook(payload) {
-    payload.id = ID;
+    payload.plcId = ID;
     let dataString = JSON.stringify(payload);
     let hmac = crypto.createHmac('sha1', HMAC_KEY)
       .update(dataString)
