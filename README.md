@@ -5,13 +5,13 @@
 1. Assign the IP address and project in PLCnext Engineer
 1. Build and load the PLC program
 1. Update the firmware via webm manager (ip address of PLC in browser)
-1. Connect to the PLC via shell `ssh admin@ip-address-of-PLC`
+1. Connect to the PLC via shell `ssh admin@10.0.0.241`
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su -`
 
 ##### THEN
 
-1. From your computer's directory with setup.sh, send the script file: `scp setup.sh admin@ip-address-of-PLC:setup.sh`
+1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@10.0.0.241:script.sh`
 1. In the PLC shell (home directory), set access levels: `chmod +x setup.sh`
 1. Then run: `bash /opt/plcnext/setup.sh`
 
