@@ -12,16 +12,16 @@
 ##### THEN
 
 1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@10.0.0.241:script.sh`
-1. In the PLC shell (home directory), set access levels: `chmod +x setup.sh`
-1. Then run: `bash /opt/plcnext/setup.sh`
+1. In the PLC shell (home directory), set access levels: `chmod +x script.sh`
+1. Then run: `bash /opt/plcnext/script.sh`
 
 ##### OR
 
 1. Set the time `date -s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"`
 1. Download & install Docker `git clone https://github.com/PLCnext/Docker_GettingStarted.git`
 1. `cd Docker_GettingStarted`
-1. `chmod +x setup.sh`
-1. Run Docker setup: `./setup.sh`
+1. `chmod +x script.sh`
+1. Run Docker setup: `./script.sh`
 1. Pull the Docker image: `balena-engine pull anodamine/plcnext:14-alpine`
 1. Start the Docker instance (with process variables) `balena-engine run -d -e WEBHOOK_URL='<webhookurl>' -e PLC_URL='<plc-url/ehmi/data.dictionary.json' -e HMAC_KEY='<hmac-key>' -e ID=$ID -e API_KEY='<api-key>' anodamine/plcnext:14-alpine`
 
