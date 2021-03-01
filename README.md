@@ -13,7 +13,7 @@
 
 1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@10.0.0.241:script.sh`
 1. In the PLC shell (home directory), set access levels: `chmod +x script.sh`
-1. Then run: `bash /opt/plcnext/script.sh`
+1. Then run (make sure you are running as root): `bash /opt/plcnext/script.sh`
 
 ##### OR
 
