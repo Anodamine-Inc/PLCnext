@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const PLC_URL = process.env.PLC_URL || '<plc-url>';
 const WEBHOOK_URL = process.env.WEBHOOK_URL || '<api-url>';
 // Defaults to every minute
-const CRON_SHEDULE = process.env.CRON_SHEDULE || '* * * * *';
+const CRON_SCHEDULE = process.env.CRON_SCHEDULE || '*/30 * * * *';
 
 const HMAC_KEY = process.env.HMAC_KEY;
 const API_KEY = process.env.API_KEY;
@@ -43,7 +43,7 @@ function notifyWebhook(payload) {
 
 console.log('App has started... waiting for cron.');
 
-cron.schedule(CRON_SHEDULE, () => {
+cron.schedule(CRON_SCHEDULE, () => {
     console.log('Getting PLC Data...');
     getPlcData().then(data => notifyWebhook(data));
   });
