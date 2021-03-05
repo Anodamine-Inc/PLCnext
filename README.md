@@ -7,7 +7,7 @@
 1. Update the firmware via webm manager (ip address of PLC in browser)
 1. Connect to the PLC via shell `ssh admin@10.0.0.241`
 1. Create the root password `sudo passwd root` //enter PLC password
-1. Switch to root: `su -`
+1. Switch to root: `su`
 
 ##### THEN
 
