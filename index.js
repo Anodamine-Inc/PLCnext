@@ -45,5 +45,9 @@ console.log('App has started... waiting for cron.');
 
 cron.schedule(CRON_SCHEDULE, () => {
     console.log('Getting PLC Data...');
-    getPlcData().then(data => notifyWebhook(data));
-  });
+    try {
+        getPlcData().then(data => notifyWebhook(data));
+    } catch (err) {
+        console.log(err);
+    }
+});
