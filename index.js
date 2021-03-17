@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const https = require('https');
 const crypto = require('crypto');
+const { exec } = require('child_process');
 
 
 const PLC_URL = process.env.PLC_URL || '<plc-url>';
@@ -26,14 +27,26 @@ function getPlcData() {
 
 };
 
-function notifyWebhook(payload) {
+function getPlcStats() {
+    try {
+        const cpu = exec(`top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`);
+        const memory = exec(`free -m | awk 'NR==2{printf "%.2f\n",$3*100/$2 }'`);
+        const numContainers = exec(`balena-engine ps --filter="name=anodamine-plcnext" -q | xargs`);
+        return { cpu, memory, numContainers };
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+
+function notifyWebhook(payload, endpoint) {
     payload.plcId = ID;
     let dataString = JSON.stringify(payload);
     let hmac = crypto.createHmac('sha1', HMAC_KEY)
       .update(dataString)
       .digest('hex');
       
-    axios.post(WEBHOOK_URL, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
+    axios.post(WEBHOOK_URL + endpoint, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
         console.log('Notified webhook')
     })
     .catch(err => {
@@ -46,7 +59,9 @@ console.log('App has started... waiting for cron.');
 cron.schedule(CRON_SCHEDULE, () => {
     console.log('Getting PLC Data...');
     try {
-        getPlcData().then(data => notifyWebhook(data));
+        let stats = getPlcStats();
+        if (stats) notifyWebhook(stats, '/stats');
+        getPlcData().then(data => notifyWebhook(data, '/data'));
     } catch (err) {
         console.log(err);
     }
