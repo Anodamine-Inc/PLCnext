@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const https = require('https');
 const crypto = require('crypto');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 
 
 const PLC_URL = process.env.PLC_URL || '<plc-url>';
@@ -32,9 +32,9 @@ function getPlcStats() {
     let memory = 0;
     let numContainers = 0;
     try {
-        cpu = exec("top -bn1 | grep \"Cpu(s)\" | sed \"s/.*, *\([0-9.]*\)%* id.*/\1/\" | awk '{print 100 - $1}'");
-        memory = exec("free -m | awk 'NR==2{printf \"%.2f\n\",$3*100/$2 }'");
-        numContainers = exec("balena-engine ps --filter=\"name=anodamine-plcnext\" -q | xargs");
+        cpu = execSync("top -bn1 | grep \"Cpu(s)\" | sed \"s/.*, *\([0-9.]*\)%* id.*/\1/\" | awk '{print 100 - $1}'");
+        memory = execSync("free -m | awk 'NR==2{printf \"%.2f\n\",$3*100/$2 }'");
+        numContainers = execSync("balena-engine ps --filter=\"name=anodamine-plcnext\" -q | xargs");
         console.log(cpu, memory, numContainers);
         cpu = parseFloat(cpu);
         memory = parseFloat(memory);
