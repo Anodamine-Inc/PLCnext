@@ -28,14 +28,20 @@ function getPlcData() {
 };
 
 function getPlcStats() {
+    let cpu = 0;
+    let memory = 0;
+    let numContainers = 0;
     try {
-        const cpu = exec(`top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`);
-        const memory = exec(`free -m | awk 'NR==2{printf "%.2f\n",$3*100/$2 }'`);
-        const numContainers = exec(`balena-engine ps --filter="name=anodamine-plcnext" -q | xargs`);
-        return { cpu, memory, numContainers };
+        cpu = exec(`top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`);
+        memory = exec(`free -m | awk 'NR==2{printf "%.2f\n",$3*100/$2 }'`);
+        numContainers = exec(`balena-engine ps --filter="name=anodamine-plcnext" -q | xargs`);
     } catch (err) {
         console.log(err);
     }
+    cpu = parseFloat(cpu);
+    memory = parseFloat(memory);
+    numContainers = parseInt(numContainers);
+    return { cpu, memory, numContainers };
 };
 
 
