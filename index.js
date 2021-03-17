@@ -60,7 +60,7 @@ cron.schedule(CRON_SCHEDULE, () => {
     console.log('Getting PLC Data...');
     try {
         let stats = getPlcStats();
-        notifyWebhook(stats, '/stats');
+        if (stats) notifyWebhook(stats, '/stats');
         getPlcData().then(data => notifyWebhook(data, '/data'));
     } catch (err) {
         console.log(err);
