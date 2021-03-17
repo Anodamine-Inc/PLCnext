@@ -34,7 +34,7 @@ function getPlcStats() {
     try {
         cpu = execSync("top -bn1 | grep \"Cpu(s)\" | sed \"s/.*, *\([0-9.]*\)%* id.*/\1/\" | awk '{print 100 - $1}'");
         memory = execSync("free -m | awk '" + 'NR==2{printf "%.2f\\n",$3*100/$2 }' + "'");
-        numContainers = execSync("balena-engine ps --filter=\"name=anodamine-plcnext\" -q | xargs");
+        numContainers = execSync("docker ps --filter=\"name=anodamine-plcnext\" -q | xargs | wc -w");
         console.log(cpu, memory, numContainers);
         cpu = parseFloat(cpu);
         memory = parseFloat(memory);
