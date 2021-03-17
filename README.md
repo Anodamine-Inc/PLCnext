@@ -23,7 +23,7 @@
 1. `chmod +x setup.sh`
 1. Run Docker setup: `./setup.sh`
 1. Pull the Docker image: `balena-engine pull anodamine/plcnext:14-alpine`
-1. Start the Docker instance (with process variables) `balena-engine run -d -e WEBHOOK_URL='<webhookurl>' -e PLC_URL='<plc-url/ehmi/data.dictionary.json' -e HMAC_KEY='<hmac-key>' -e ID=$ID -e API_KEY='<api-key>' anodamine/plcnext:14-alpine`
+1. Start the Docker instance (with process variables) `balena-engine run -d --restart=always -e WEBHOOK_URL='<webhookurl>' -e PLC_URL='https://<PLC-ip-address>/_pxc_api/api/variables/?pathPrefix=Arp.Plc.Eclr/&paths=<var1>,<var2>,<etc>' -e CRON_SCHEDULE='*/30 * * * *' -e HMAC_KEY='<HMACKEY>' -e ID='<ID>' -e API_KEY='<APIKEY>' anodamine/plcnext:14-alpine`
 
 <br/> 
  
@@ -40,6 +40,9 @@ Stop a container execution
 
 Stop all containers via remote SSH
 `ssh -t admin@10.0.0.241 'balena-engine stop $(balena-engine ps -a -q)'`
+
+Prune all unused containers
+`balena system prune`
 
 <br/>
 ## Updating / Writing from VSCode
