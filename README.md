@@ -35,14 +35,20 @@ Lists active containers
 Lists all containers
 `balena-engine ps -a`
 
+List number of containers active
+`balena-engine ps -q | xargs | wc -w`
+
 Stop a container execution
 `balena-engine stop <id of container>`
+
+Stop all containers
+`balena-engine stop $(balena-engine ps -a -q)`
 
 Stop all containers via remote SSH
 `ssh -t admin@10.0.0.241 'balena-engine stop $(balena-engine ps -a -q)'`
 
 Prune all unused containers
-`balena system prune`
+`balena-engine system prune`
 
 <br/>
 ## Updating / Writing from VSCode
