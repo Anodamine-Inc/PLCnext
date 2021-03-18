@@ -2,8 +2,6 @@ const cron = require('node-cron');
 const axios = require('axios');
 const https = require('https');
 const crypto = require('crypto');
-const { execSync } = require('child_process');
-
 
 const PLC_URL = process.env.PLC_URL || '<plc-url>';
 const WEBHOOK_URL = process.env.WEBHOOK_URL || '<api-url>';
@@ -27,34 +25,14 @@ function getPlcData() {
 
 };
 
-function getPlcStats() {
-    let cpu = 0;
-    let memory = 0;
-    let numContainers = 0;
-    try {
-        cpu = execSync("top -bn1 | grep \"Cpu(s)\" | sed \"s/.*, *\([0-9.]*\)%* id.*/\1/\" | awk '{print 100 - $1}'");
-        memory = execSync("free -m | awk '" + 'NR==2{printf "%.2f\\n",$3*100/$2 }' + "'");
-        numContainers = execSync("balena-engine ps -q | xargs | wc -w");
-        console.log(cpu, memory, numContainers);
-        cpu = parseFloat(cpu);
-        memory = parseFloat(memory);
-        numContainers = parseInt(numContainers);
-    } catch (err) {
-        console.log(err);
-    }
-    console.log({ cpu, memory, numContainers });
-    return { cpu, memory, numContainers };
-};
-
-
-function notifyWebhook(payload, endpoint) {
+function notifyWebhook(payload) {
     payload.plcId = ID;
     let dataString = JSON.stringify(payload);
     let hmac = crypto.createHmac('sha1', HMAC_KEY)
       .update(dataString)
       .digest('hex');
       
-    axios.post(WEBHOOK_URL + endpoint, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
+    axios.post(WEBHOOK_URL, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
         console.log('Notified webhook')
     })
     .catch(err => {
@@ -67,9 +45,7 @@ console.log('App has started... waiting for cron.');
 cron.schedule(CRON_SCHEDULE, () => {
     console.log('Getting PLC Data...');
     try {
-        let stats = getPlcStats();
-        if (stats) notifyWebhook(stats, '/stats');
-        getPlcData().then(data => notifyWebhook(data, '/data'));
+        getPlcData().then(data => notifyWebhook(data));
     } catch (err) {
         console.log(err);
     }
