@@ -1,4 +1,4 @@
-const cron = require('node-cron');
+const CronJob = require('cron').CronJob;
 const axios = require('axios');
 const https = require('https');
 const crypto = require('crypto');
@@ -12,17 +12,15 @@ const HMAC_KEY = process.env.HMAC_KEY;
 const API_KEY = process.env.API_KEY;
 const ID = process.env.ID;
 
+const agent = new https.Agent({ rejectUnauthorized: false });
+
 function getPlcData() {
-    const agent = new https.Agent({  
-        rejectUnauthorized: false
-      });
-    return axios.get(PLC_URL, { httpsAgent: agent}).then(res => {
+    return axios.get(PLC_URL, { httpsAgent: agent }).then(res => {
         return res.data;
     })
     .catch(err => {
         console.log(err);
     });
-
 };
 
 function notifyWebhook(payload) {
@@ -31,22 +29,29 @@ function notifyWebhook(payload) {
     let hmac = crypto.createHmac('sha1', HMAC_KEY)
       .update(dataString)
       .digest('hex');
-      
-    axios.post(WEBHOOK_URL, payload, { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } }).then(res => {
-        console.log('Notified webhook')
-    })
-    .catch(err => {
-        console.log(err);
-    });
+    
+    let config = { params: { key: API_KEY }, headers: { 'Content-Type':'application/json', 'x-hmac': hmac } };
+
+    axios.post(WEBHOOK_URL, payload, config)
+        .then(res => {
+            console.log('Notified webhook', res);
+        })
+        .catch(err => {
+            console.log('Failed to notify webhook', err);
+        });
+    return;
 }
 
-console.log('App has started... waiting for cron.');
+const job = new CronJob(
+	CRON_SCHEDULE,
+	function() {
+		console.log('Getting PLC Data...');
+        try {
+            getPlcData().then(data => notifyWebhook(data));
+        } catch (err) {
+            console.log(err);
+        }
+	}
+);
 
-cron.schedule(CRON_SCHEDULE, () => {
-    console.log('Getting PLC Data...');
-    try {
-        getPlcData().then(data => notifyWebhook(data));
-    } catch (err) {
-        console.log(err);
-    }
-});
+job.start();
