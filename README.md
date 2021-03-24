@@ -9,6 +9,13 @@
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su`
 
+###PYTHON
+
+1. Put the python script onto PLC (Filezilla or SCP)
+1. Set crontab run
+   `EDITOR=nano crontab -e` ENTER
+   `*/30 * * * * /usr/bin/python3 /opt/plcnext/app.py` CTRL + X, Y, ENTER
+
 ##### THEN
 
 1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@10.0.0.241:script.sh`
