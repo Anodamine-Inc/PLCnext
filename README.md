@@ -55,6 +55,9 @@ Stop all containers via remote SSH
 `ssh -t admin@10.0.0.241 'balena-engine stop $(balena-engine ps -a -q)'`
 
 Prune all unused containers
+`balena-engine system prune -a`
+
+Prune all unused containers
 `balena-engine system prune`
 
 <br/>
