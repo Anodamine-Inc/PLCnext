@@ -4,21 +4,24 @@
 
 1. Assign the IP address and project in PLCnext Engineer
 1. Build and load the PLC program
-1. Update the firmware via webm manager (ip address of PLC in browser)
-1. Connect to the PLC via shell `ssh admin@10.0.0.241`
+1. Update the firmware via webm manager (`192.168.0.2/wbm`)
+1. Go to ehmi page (`192.168.0.2`), fill out the plcId, hmacKey, and apiKey inputs.
+1. Connect to the PLC via shell `ssh admin@192.168.0.2`
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su`
 
 ###PYTHON
 
-1. Put the python script onto PLC (Filezilla or SCP)
+1. Put the python script onto PLC (Filezilla or `scp app.py admin@192.168.0.2:app.py` from same directory as script)
 1. Set crontab run
    `EDITOR=nano crontab -e` ENTER
    `*/30 * * * * /usr/bin/python3 /opt/plcnext/app.py` CTRL + X, Y, ENTER
 
+###NODE WITH DOCKER
+
 ##### THEN
 
-1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@10.0.0.241:script.sh`
+1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@192.168.0.2:script.sh`
 1. In the PLC shell (home directory), set access levels: `chmod +x script.sh`
 1. Then run (make sure you are running as root): `bash /opt/plcnext/script.sh`
 
