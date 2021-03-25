@@ -1,25 +1,28 @@
 # PLCNext
 
-## Setting up the PLC
+## SETTING UP PLC
 
 1. Assign the IP address and project in PLCnext Engineer
-1. Build and load the PLC program
 1. Update the firmware via webm manager (`192.168.0.2/wbm`)
+1. Build and load the PLC program
 1. Go to ehmi page (`192.168.0.2`), fill out the plcId, hmacKey, and apiKey inputs.
-1. Connect to the PLC via shell `ssh admin@192.168.0.2`
+1. Connect to the PLC with shell `ssh admin@192.168.0.2`
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su`
 
 ###PYTHON
 
+1. Install pip on the plc (make sure you have an internet connection on the PLC).
+   `curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py` then
+   `python3 get-pip.py`
+1. Install requests python package
+   `python3 -m pip install requests`
 1. Put the python script onto PLC (Filezilla or `scp app.py admin@192.168.0.2:app.py` from same directory as script)
 1. Set crontab run
-   `EDITOR=nano crontab -e` ENTER
-   `*/30 * * * * /usr/bin/python3 /opt/plcnext/app.py` CTRL + X, Y, ENTER
+   `EDITOR=nano crontab -e` //ENTER
+   `*/30 * * * * /usr/bin/python3 /opt/plcnext/app.py` //CTRL + X, Y, ENTER
 
-###NODE WITH DOCKER
-
-##### THEN
+###NODE WITH DOCKER (obselete)
 
 1. From your computer's directory with setup.sh, send the script file: `scp script.sh admin@192.168.0.2:script.sh`
 1. In the PLC shell (home directory), set access levels: `chmod +x script.sh`
@@ -37,7 +40,7 @@
 
 <br/> 
  
-## Helpful Shell Commands
+### Helpful Shell Commands
 
 Lists active containers
 `balena-engine ps`
