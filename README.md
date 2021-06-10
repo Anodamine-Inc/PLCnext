@@ -1,6 +1,27 @@
 # PLCNext
 
-## SETTING UP PLC
+## COPYING MASTER SD TO WORKING SD(s)
+1. Insert the master SD card into SD card reader on pi
+1. Open two terminal windows. Change directories in one of them:
+`cd ~/Media/pi/`
+1. List out the SD card: `ls`
+1. Unmount the SD card: 
+`sudo umount <theIDoftheSDcard>`
+1. On the other terminal, navigate to where the script file is located
+`cd ~/Desktop`
+1. List out potential SD cards (keep note of what the identifier is for the master SD card--ex. sdd).
+`lsblk`
+1. Insert the next 2 SD cards you would like to copy to.
+1. In the first terminal, run `ls` again to list out the mounted SD cards.
+1. Unmount both SD cards
+`sudo umount <theIDoftheSDcard>`
+1. In the second terminal, run the copy script:
+`sudo bash ./sdscript1.sh`
+1. Press the number corresponding to the SD card identifer that you noted earlier. Hit enter.
+1. Type "No" and hit enter to exit once complete.
+
+
+## SETTING UP PLC (MANUAL)
 
 1. Assign the IP address and project in PLCnext Engineer
 1. Update the firmware via webm manager (`192.168.0.2/wbm`)
