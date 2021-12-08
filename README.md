@@ -26,7 +26,6 @@
 1. Assign the IP address and project in PLCnext Engineer
 1. Update the firmware via webm manager (`192.168.0.2/wbm`)
 1. Build and load the PLC program
-1. Go to ehmi page (`192.168.0.2`), fill out the plcId, hmacKey, and apiKey inputs.
 1. Connect to the PLC with shell `ssh admin@192.168.0.2`
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su`
