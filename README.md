@@ -29,7 +29,7 @@
 1. Connect to the PLC with shell `ssh admin@192.168.0.2`
 1. Create the root password `sudo passwd root` //enter PLC password
 1. Switch to root: `su`
-1. Set the time/date `-s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"`
+1. Set the time/date `date -s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"`
 
 ###PYTHON & CRONSCHEDULE
 
